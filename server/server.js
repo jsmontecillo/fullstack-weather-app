@@ -15,22 +15,24 @@ app.get('/', (req, res) => {
 });
 
 // create the get request
-app.get('/api/students', cors(), async (req, res) => {
-  // const STUDENTS = [
-
-  //     { id: 1, firstName: 'Lisa', lastName: 'Lee' },
-  //     { id: 2, firstName: 'Eileen', lastName: 'Long' },
-  //     { id: 3, firstName: 'Fariba', lastName: 'Dadko' },
-  //     { id: 4, firstName: 'Cristina', lastName: 'Rodriguez' },
-  //     { id: 5, firstName: 'Andrea', lastName: 'Trejo' },
-  // ];
-  // res.json(STUDENTS);
-  try {
-    const { rows: students } = await db.query('SELECT * FROM students');
-    res.send(students);
-  } catch (e) {
-    return res.status(400).json({ e });
-  }
+app.get("/weather", (req,res) => {
+  const city = cities[Math.floor(Math.random() * cities.length)];
+  const apiKey = process.env.REACT_API_KEY;
+  const params = new URLSearchParams({
+      q: city,
+      APPID: process.env.REACT_API_KEY,
+      units: "imperial",
+  });
+  const url = `https://api.openweathermap.org/data/2.5/weather?${params}`; 
+  console.log(url);
+  fetch(url)
+  .then((res) => res.json())
+  .then((data) => {
+       res.send(data);
+   })
+   .catch((err) => {
+       console.log(err);
+   });
 });
 
 // create the POST request
