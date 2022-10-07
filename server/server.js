@@ -80,6 +80,12 @@ app.post('/api/favorites', cors(), async (req, res) => {
   res.json(result.rows[0]);
 });
 
+app.delete(`/api/favorites/:id`, cors(), async(req,res) => {
+  const userId = req.params.id;
+  await db.query('DELETE FROM users WHERE id=$1', [userId]);
+  res.status(200).end();
+});
+
 // console.log that your server is up and running
 app.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);

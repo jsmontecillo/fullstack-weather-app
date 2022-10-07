@@ -15,7 +15,7 @@ function Users() {
       .then((users) => {
             setUsers(users);
           });
-  }, []);
+  }, [users]);
 
   const addUser = (newUser) => {
     //console.log(newStudent);
@@ -47,6 +47,14 @@ function Users() {
     setSelectedId(id);
   }
 
+  const onDelete = async (ID) => {
+    let response = await fetch(`http://localhost:1010/api/favorites/${ID}`, {method: "DELETE"})
+    await response.json();
+    let deleteUsers = [...users];
+    let deleted = deleteUsers.filter((user) => user.id !== Number(ID));
+    setUsers(deleted);
+  }
+
   return (
     <div className="users">
       <h2>Users</h2>
@@ -54,7 +62,7 @@ function Users() {
           return (
           <div className="user-card" key={user.id}>
             <span style={{marginLeft: "-1100px"}}>
-              {user.username} <button>Edit</button> <button>Delete</button>
+              {user.username} <button>Edit</button> <button type="button" onClick={() => {onDelete(user.id)}}>Delete</button>
             </span>
             <span style={{float: "right", marginRight: "20px"}} >
             &#9829; {user.favorite} <span onClick={() => handleFavorite(user.favorite, user.id)}>&#8595;</span>
@@ -64,7 +72,11 @@ function Users() {
                 <div className={selectedId === user.id ? 'five-days' : 'hide'}>
                   {weatherData.map((day, index) => {
                     console.log(day);
-                    return <DayCard data={day} day={index} />
+                    return (
+                    <div className="selected-fave">
+                      <DayCard data={day} day={index} />
+                    </div>
+                    )
                   })}
                 </div>
               </>
