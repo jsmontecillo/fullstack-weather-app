@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import "./weather.css";
 import DayCard from './daycard.js';
+import Users from './users.js';
 
 const Weather = () => {
     let today = new Date();
@@ -9,12 +10,12 @@ const Weather = () => {
     let hr = today.getHours();
     console.log(hr)
     const [weatherData, setWeatherData] = useState(null);
-    const [city, setCity] = useState({});
+    const [checkData, setCheckData] = useState(true);
+    const [city, setCity] = useState("Your City");
 
     const handleSubmit =  (e) => {
         e.preventDefault();
-
-        fetch("http://localhost:1010/weather")
+        fetch(`http://localhost:1010/weather/${city}`)
         .then((response) => { 
             if (response.ok) { // Checks server response (if there is one) 
                 return response.json();
@@ -24,12 +25,14 @@ const Weather = () => {
         .then((data) => 
             {
                 console.log(data);
+                setCheckData(data);
                 const filtered = data.list.filter((i, index) => {
                     return index % 8 === 0 || index === 0;
                 })
+                console.log(filtered);
                 setWeatherData(filtered);
-                setCity(data.city);
-                switch(data.list[0].weather.main) {
+                console.log(data.list[0].weather[0].main);
+                switch(filtered[0].weather.main) {
                     case "Clouds":
                         document.getElementsByTagName('body')[0].style.backgroundImage = "url('https://wallpaper.dog/large/10981227.jpg')";
                     break;
@@ -92,31 +95,38 @@ console.log(weatherData);
 console.log(city);
   return (
     <>
-        <div className="weather">
+        <div className="">
             <div>
                 <form onSubmit={handleSubmit} >
-                    <input type="submit" value="Get Weather" onSubmit={handleSubmit} />
+                    <input 
+                    type="text" 
+                    placeholder="New York"
+                    id="city"
+                    name="city"
+                    onChange={event => setCity(event.target.value)}
+                    value={city}
+                      />
+                    <button type="submit">Get Weather</button>
                 </form>
             </div>
-            { weatherData ? weatherData  === "404" ? (
-                `The city is not valid: Enter a valid city`
-            ) : (
+            { checkData.cod  === "404" ? (
+                <h1>Enter a valid city</h1>
+            ) : ( weatherData ? (
                 <>
-                <div className="5-days">
+                <div className="five-days">
                     {weatherData.map((day, index) => {
                         console.log(day);
-                        return <DayCard data={day} key={index} />
+                        return <DayCard data={day} day={index} />
                     })}
                 </div>
                 <div className="city">
-                    <p style={{fontSize: "100px", marginTop: "300px", marginLeft: "550px", textShadow: "2px 2px 4px #000000", color:"white"}}>{city.name}</p>
+                    <p style={{fontSize: "100px", marginTop: "100px", marginLeft: "550px", textShadow: "2px 2px 4px #000000", color:"white"}}>{city}</p>
                 </div>
                 </>
             ) : (
                 <p style={{fontSize: "30px"}}>Welcome!</p>
                 )
-            }
-
+            )}
         </div>
         </>
 

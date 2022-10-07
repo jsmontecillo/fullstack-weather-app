@@ -1,0 +1,27 @@
+ul {
+    list-style: none;
+}
+
+li {
+    padding: 10px;
+}
+
+.user-card {
+    background-color: white;
+    opacity: 0.5;
+    border: solid 1px black;
+    padding: 20px;
+}
+
+.fa {
+    display:inline-block;
+    font:normal normal normal 14px/1 FontAwesome;
+    font-size:inherit;
+    text-rendering:auto;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale
+}
+
+.fa-angle-down:before {
+    content:"\f107";
+}

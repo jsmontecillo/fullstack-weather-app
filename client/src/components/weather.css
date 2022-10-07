@@ -4,3 +4,8 @@
     line-height: 20%;
     color: black;
 }
+.five-days {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}

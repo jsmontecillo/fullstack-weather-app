@@ -14,14 +14,43 @@ app.get('/', (req, res) => {
   res.json({ message: 'Hello from My template ExpressJS' });
 });
 
+app.get('/api/favorites', cors(), async (req, res) => {
+  try {
+    const { rows: users } = await db.query('SELECT * FROM users');
+    res.send(users);
+  } catch (e) {
+    return res.status(400).json({ e });
+  }
+});
+
 const cities = ["london", "los angeles", "chicago", "new york", "tokyo", "austin", "las vegas", "new orleans", "seattle", "miami", "paris", "dubai", "bangkok", "milan", "hanoi"]
 // create the get request
-app.get("/weather", (req,res) => {
-  const zip = req.body.zip;
-  const city = cities[Math.floor(Math.random() * cities.length)];
+// app.get("/weather/:city", (req,res) => {
+//   const city = req.params.city;
+//   console.log(city);
+//   const apiKey = process.env.REACT_API_KEY;
+//   const params = new URLSearchParams({
+//       q: city,
+//       APPID: apiKey,
+//       units: "imperial",
+//   });
+//   const url = `https://api.openweathermap.org/data/2.5/forecast?${params}`; 
+//   console.log(url);
+//   fetch(url)
+//   .then((res) => res.json())
+//   .then((data) => {
+//        res.send(data);
+//    })
+//    .catch((err) => {
+//        console.log(err);
+//    });
+// });
+
+app.get("/weather/:favorite", (req,res) => {
+  const fave = req.params.favorite;
   const apiKey = process.env.REACT_API_KEY;
   const params = new URLSearchParams({
-      q: city,
+      q: fave,
       APPID: apiKey,
       units: "imperial",
   });
