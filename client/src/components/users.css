@@ -8,7 +8,7 @@ li {
 
 .user-card {
     background-color: white;
-    opacity: 0.5;
+    opacity: 1;
     border: solid 1px black;
     padding: 20px;
 }
@@ -24,4 +24,8 @@ li {
 
 .fa-angle-down:before {
     content:"\f107";
+}
+
+.hide {
+    display: none;
 }

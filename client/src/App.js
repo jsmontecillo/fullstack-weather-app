@@ -27,8 +27,8 @@ const ButtonGroup = styled.div`
   display: flex;
 `;
 const types = ['Weather', 'Users', 'Contact Us'];
-const typeTags = [<div className="weather-tab"><h1>Hello</h1><Weather /></div>, <div className="user-tab"><Users /></div>,       <main>
-<h1>Hello</h1>
+const typeTags = [<div className="weather-tab"><h1 style={{textShadow: "2px 2px 4px #000000"}}>Hello, World!</h1><img src={dog} alt="this is fine dog meme" style={{position: "absolute", marginTop: "200px", marginLeft: "-650px"}}/><Weather /></div>, <div className="user-tab"><Users /></div>,       <main>
+<h1>Hello, World!</h1>
 </main>];
 
 function App() {
@@ -36,9 +36,6 @@ function App() {
   const [data, setData] = useState("");
   return (
     <div className="App">
-      {/*<h1 style={{textShadow: "2px 2px 4px #000000"}}>Weather Around the World</h1>
-      <img src={dog} alt="this is fine dog meme" style={{position: "absolute", marginTop: "200px", marginLeft: "-250px"}}/>
-      <img src={speech} alt="speech bubble" style={{position: "relative", width: "500px", zIndex: "-1"}}/>*/}
       <ButtonGroup>
         {types.map((type, index) => {
           console.log(typeTags[index])

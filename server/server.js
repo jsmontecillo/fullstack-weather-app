@@ -66,20 +66,19 @@ app.get("/weather/:favorite", (req,res) => {
    });
 });
 
-// create the POST request
-// app.post('/api/students', cors(), async (req, res) => {
-//   const newUser = {
-//     firstname: req.body.firstname,
-//     lastname: req.body.lastname,
-//   };
-//   console.log([newUser.firstname, newUser.lastname]);
-//   const result = await db.query(
-//     'INSERT INTO students(firstname, lastname) VALUES($1, $2) RETURNING *',
-//     [newUser.firstname, newUser.lastname],
-//   );
-//   console.log(result.rows[0]);
-//   res.json(result.rows[0]);
-// });
+//create the POST request
+app.post('/api/favorites', cors(), async (req, res) => {
+  const newUser = {
+    username: req.body.username,
+    favorite: req.body.favorite,
+  };
+  const result = await db.query(
+    'INSERT INTO users(username, favorite) VALUES($1, $2) RETURNING *',
+    [newUser.username, newUser.favorite],
+  );
+  console.log(result.rows[0]);
+  res.json(result.rows[0]);
+});
 
 // console.log that your server is up and running
 app.listen(PORT, () => {

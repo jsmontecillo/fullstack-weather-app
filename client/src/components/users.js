@@ -7,6 +7,7 @@ function Users() {
   const [users, setUsers] = useState([]);
   const [weatherData, setWeatherData] = useState([]);
   const [selected, setSelected] = useState(false);
+  const [selectedId, setSelectedId] = useState(0);
 
   useEffect(() => {
     fetch("http://localhost:1010/api/favorites")
@@ -16,8 +17,15 @@ function Users() {
           });
   }, []);
 
+  const addUser = (newUser) => {
+    //console.log(newStudent);
+    //postStudent(newStudent);
+    console.log(users);
+    setUsers((users) => [...users, newUser]);
+    console.log(users);
+  };
 
-  const handleFavorite = (favorite) => {
+  const handleFavorite = (favorite, id) => {
     fetch(`http://localhost:1010/weather/${favorite}`)
     .then((response) => { 
         if (response.ok) { // Checks server response (if there is one) 
@@ -36,22 +44,24 @@ function Users() {
             console.log(data.list[0].weather[0].main);
     })
     setSelected(!selected);
+    setSelectedId(id);
   }
+
   return (
     <div className="users">
       <h2>Users</h2>
         {users.map((user) => {
           return (
           <div className="user-card" key={user.id}>
-            <span style={{marginLeft: "-1200px"}}>
-              {user.username}
+            <span style={{marginLeft: "-1100px"}}>
+              {user.username} <button>Edit</button> <button>Delete</button>
             </span>
-            <span style={{float: "right", marginRight: "20px"}} onClick={() => handleFavorite(user.favorite)}>
-              {user.favorite} &#xf358;
+            <span style={{float: "right", marginRight: "20px"}} >
+            &#9829; {user.favorite} <span onClick={() => handleFavorite(user.favorite, user.id)}>&#8595;</span>
             </span>
             {selected ? (
               <>
-                <div className="five-days">
+                <div className={selectedId === user.id ? 'five-days' : 'hide'}>
                   {weatherData.map((day, index) => {
                     console.log(day);
                     return <DayCard data={day} day={index} />
@@ -64,7 +74,8 @@ function Users() {
           </div>
           );
           })}
-      {/*<Form addStudent={addStudent} />*/}
+        <h2>Add User</h2>
+      <Form addUser={addUser}/>
     </div>
   );
 }
